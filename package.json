@@ -2,10 +2,11 @@
   "name": "vaga-bot",
   "version": "1.0.0",
   "description": "job bot",
-  "main": "dist/index.js",
+  "main": "dist/main/server.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "npm run build && node dist/main/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "puppeteer": "^22.12.1"
+    "puppeteer": "^22.12.1",
+    "typescript-telegram-bot-api": "^0.1.19"
   }
 }
