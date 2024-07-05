@@ -1,0 +1,2 @@
+# vaga-bot
+job bot
