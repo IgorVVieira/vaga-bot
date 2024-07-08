@@ -4,8 +4,7 @@ import { ITransformJobResult } from "../../../data/interfaces/transform-job-resu
 import { IJob } from "../../../domain/entities/job";
 
 export class TransformJobsSolidesCheerio implements ITransformJobResult<string> {
-  transform(data: string): IJob[] {
-
+  public transform(data: string): IJob[] {
     const $ = load(data);
 
     const jobs: IJob[] = [];
@@ -20,11 +19,8 @@ export class TransformJobsSolidesCheerio implements ITransformJobResult<string> 
       const announcement = $(element).find('time').text();
       const relativeLink = $(element).find('.text-subtitle1').attr('href');
 
-      console.log(relativeLink)
-
       const baseURL = 'https://vagas.solides.com.br';
       const fullLink = new URL(relativeLink as string, baseURL).toString();
-
 
       jobs.push({
         title: jobTitle as string,

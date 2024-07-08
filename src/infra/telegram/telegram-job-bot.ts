@@ -44,6 +44,7 @@ export class TelegramJobBot {
         text: jobsString,
       });
     } catch (error) {
+      console.error(error);
       await this.bot.sendMessage({
         chat_id: message.chat.id,
         text: 'Ocorreu um erro ao processar sua solicitação, tente novamente mais tarde ou insira um termo de busca válido.',

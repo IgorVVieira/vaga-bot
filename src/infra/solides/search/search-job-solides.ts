@@ -4,7 +4,7 @@ import { ISearchJobProvider } from "../../../data/interfaces/search-job-provider
 
 export class SearchJobSolides implements ISearchJobProvider<string> {
   public async search(keyWord: string): Promise<string> {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
 
     const searchQuery = keyWord;
