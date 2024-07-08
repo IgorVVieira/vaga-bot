@@ -14,6 +14,7 @@ export class SearchJobSolides implements ISearchJobProvider<string> {
     await page.goto(`https://vagas.solides.com.br/vagas?page=1&locals=&title=${searchQuery}&jobsType=${jobType}&seniorities=${seniority}&pcd=false`);
 
     await delay(3000);
+    // TODO: validte if has next page, because if not, maybe have no results
 
     await page.waitForSelector('#next-page', { visible: true });
 
