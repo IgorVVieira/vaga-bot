@@ -10,6 +10,15 @@ export class TelegramJobBot {
     this.bot = new TelegramBot({ botToken });
   }
 
+  public async isAlive(): Promise<boolean> {
+    try {
+      const bot = await this.bot.getMe();
+      return bot.is_bot;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public async initializeBot(): Promise<void> {
     try {
       await this.bot.startPolling();

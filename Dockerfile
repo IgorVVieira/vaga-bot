@@ -35,6 +35,8 @@ COPY . .
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+ENV PORT=1000
+
 EXPOSE 1000
 
 CMD ["npm", "run", "start"]
