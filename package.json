@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.5",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
+    "express": "^4.19.2",
     "puppeteer": "^22.12.1",
     "typescript-telegram-bot-api": "^0.1.19"
   }
