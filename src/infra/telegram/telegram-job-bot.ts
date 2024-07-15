@@ -1,7 +1,7 @@
 import { TelegramBot } from "typescript-telegram-bot-api";
 import { Message } from "typescript-telegram-bot-api/dist/types";
-import { searchJobFactory } from "../../main/factories/search-job-factory";
-import { Provider } from "../../domain/entities/providers";
+import { Provider } from "@domain/entities/providers";
+import { searchJobFactory } from "main/factories/search-job-factory";
 
 export class TelegramJobBot {
   private readonly bot: TelegramBot;
