@@ -34,6 +34,7 @@ export class TelegramJobBot {
   private async handleMessage(message: Message): Promise<void> {
     try {
       if (!message.chat || !message.chat.id) return;
+      const start = Date.now();
 
       await this.bot.sendMessage({
         chat_id: message.chat.id,
@@ -50,7 +51,7 @@ export class TelegramJobBot {
 
       await this.bot.sendMessage({
         chat_id: message.chat.id,
-        text: jobsString,
+        text: jobsString + '\n\nO tempo de resposta foi de ' + (Date.now() - start) + 'ms',
       });
     } catch (error) {
       console.error(error);
