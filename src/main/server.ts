@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express'
 
-import { TelegramJobBot } from '@infra/telegram/telegram-job-bot';
-
+import { TelegramJobBot } from 'adapters/gateways/telegram/telegram-job-bot';
 
 const bot = new TelegramJobBot(process.env.TELEGRAM_BOT_TOKEN || '');
 

@@ -1,7 +1,7 @@
 import { TelegramBot } from "typescript-telegram-bot-api";
 import { Message } from "typescript-telegram-bot-api/dist/types";
-import { Provider } from "@domain/entities/providers";
 import { searchJobFactory } from "main/factories/search-job-factory";
+import { Provider } from "core/domain/entities/providers";
 
 export class TelegramJobBot {
   private readonly bot: TelegramBot;
@@ -12,8 +12,7 @@ export class TelegramJobBot {
 
   public async isAlive(): Promise<boolean> {
     try {
-      const bot = await this.bot.getMe();
-      return bot.is_bot;
+      return (await this.bot.getMe()).is_bot;
     } catch (error) {
       return false;
     }
@@ -24,6 +23,7 @@ export class TelegramJobBot {
       await this.bot.startPolling();
 
       this.bot.on('message', async (message: Message) => {
+        console.log(message);
         await this.handleMessage(message);
       });
     } catch (error) {
@@ -41,9 +41,11 @@ export class TelegramJobBot {
         text: 'Processando seu pedido...',
       });
 
+      const userName = message.from?.first_name + ' ' + message.from?.last_name;
+
       const searchJobUseCase = searchJobFactory(Provider.SOLIDES);
 
-      const jobs = await searchJobUseCase.handle(message.text as string);
+      const jobs = await searchJobUseCase.execute(message.text as string);
 
       const jobsString = jobs.map((job: any) =>
         `--------\n\n- Titulo: ${job.title} \n- Empresa: ${job.company} \n- Local: ${job.location} \n- Salario: ${job.salary} \n- Tipo de contrato: ${job.jobType} \n- Senioridade: ${job.seniority} \n- Data de anúncio: ${job.announced} \n- Forma de contratação: ${job.hiringForm} \n- Link: ${job.link}`
@@ -51,7 +53,7 @@ export class TelegramJobBot {
 
       await this.bot.sendMessage({
         chat_id: message.chat.id,
-        text: jobsString + '\n\nO tempo de resposta foi de ' + (Date.now() - start) + 'ms',
+        text: 'Ola ' + userName + ', seus resultados de busca são:\n\n' + jobsString + '\n\nO tempo de resposta foi de ' + (Date.now() - start) + 'ms',
       });
     } catch (error) {
       console.error(error);
