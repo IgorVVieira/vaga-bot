@@ -6,6 +6,8 @@ const bot = new TelegramJobBot(process.env.TELEGRAM_BOT_TOKEN || '');
 
 bot.initializeBot().catch((error) => {
   console.error(error);
+}).then(() => {
+  console.log('Bot is ready');
 });
 
 const app = express();
