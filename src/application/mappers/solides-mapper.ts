@@ -1,3 +1,4 @@
+import { DateHelper } from "@utils/date-helper";
 import { ISolidesJobData } from "adapters/gateways/solides/types/solides-job-response";
 import { IJob } from "core/domain/entities/job";
 
@@ -11,7 +12,7 @@ export const solidesMapper = (solidesJob: ISolidesJobData[]): IJob[] => {
       salary: salary ? `R$ ${salary}` : 'Não informado',
       jobType: job.jobType as string,
       seniority: 'junior',
-      announcement: job.createdAt as string,
+      announcement: DateHelper.formatISODate(job.createdAt as string),
       hiringForm: 'Remoto',
       link: job.redirectLink as string
     }

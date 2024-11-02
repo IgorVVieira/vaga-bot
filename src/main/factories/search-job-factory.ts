@@ -1,9 +1,8 @@
-import { SearchJobSolides } from "adapters/gateways/solides/search/search-job-solides";
-import { IJob } from "core/domain/entities/job";
+import { SearchJobSolides, SearchSolidesJob } from "adapters/gateways/solides/search/search-job-solides";
 import { Provider } from "core/domain/entities/providers";
 import { SearchJobUseCase } from "core/use-cases/search-job/search-job";
 
-export const searchJobFactory = (provider: Provider): SearchJobUseCase<string> => {
+export const searchJobFactory = (provider: Provider): SearchJobUseCase<SearchSolidesJob> => {
   switch (provider) {
     case Provider.SOLIDES:
       return new SearchJobUseCase(new SearchJobSolides());

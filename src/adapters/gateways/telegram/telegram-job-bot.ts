@@ -2,7 +2,6 @@ import { TelegramBot } from "typescript-telegram-bot-api";
 import { Message } from "typescript-telegram-bot-api/dist/types";
 import { searchJobFactory } from "main/factories/search-job-factory";
 import { Provider } from "core/domain/entities/providers";
-import { IJob } from "core/domain/entities/job";
 
 export class TelegramJobBot {
   private readonly bot: TelegramBot;
@@ -36,25 +35,39 @@ export class TelegramJobBot {
       if (!message.chat || !message.chat.id) return;
       const start = Date.now();
 
+      let text = message.text || '';
+      let filterByDay = false;
+      if (message.text?.includes('/dia')) {
+        text = message.text?.replace('/dia', '').trim();
+        filterByDay = true;
+      }
+
       await this.bot.sendMessage({
         chat_id: message.chat.id,
         text: 'Processando seu pedido...',
       });
 
-      const userName = message.from?.first_name + ' ' + message.from?.last_name;
+      const userName = `${message.from?.first_name} ${message?.from?.last_name}`;
 
       const searchJobUseCase = searchJobFactory(Provider.SOLIDES);
+      const jobs = await searchJobUseCase.execute({keyWord: text, filterByDay});
 
-      const jobs = await searchJobUseCase.execute(message.text as string);
+      if (!jobs.length && filterByDay) {
+        await this.bot.sendMessage({
+          chat_id: message.chat.id,
+          text: 'Infelimente nenhum resultado foi encontrado para hoje. Tente novamente mais tarde.',
+        });
+        return;
+      }
 
-      const jobsString = jobs.map((job: any) =>
-        `--------\n\n- Titulo: ${job.title} \n- Empresa: ${job.company} \n- Local: ${job.location} \n- Salario: ${job.salary} \n- Tipo de contrato: ${job.jobType} \n- Senioridade: ${job.seniority} \n- Data de anúncio: ${job.announced} \n- Forma de contratação: ${job.hiringForm} \n- Link: [Candidatar-se](${job.link})`
+      const jobsString = jobs.map((job) =>
+        `--------\n\n- Titulo: ${job.title} \n- Empresa: ${job.company} \n- Local: ${job.location} \n- Salario: ${job.salary} \n- Tipo de contrato: ${job.jobType} \n- Senioridade: ${job.seniority} \n- Data de anúncio: ${job.announcement} \n- Forma de contratação: ${job.hiringForm} \n- Link: [Candidatar-se](${job.link})`
       ).join('\n');
 
       await this.bot.sendMessage({
         chat_id: message.chat.id,
         parse_mode: 'Markdown',
-        text: 'Ola ' + userName + ', seus resultados de busca são:\n\n' + jobsString + '\n\nO tempo de resposta foi de ' + (Date.now() - start) + 'ms',
+        text: `Ola ${userName}, seus resultados de busca são:\n\n ${jobsString} \n\nO tempo de resposta foi de ${(Date.now() - start)}ms.`,
       });
     } catch (error) {
       console.error(error);

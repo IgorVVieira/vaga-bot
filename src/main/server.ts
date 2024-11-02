@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { Request, Response } from 'express'
 
 import { TelegramJobBot } from 'adapters/gateways/telegram/telegram-job-bot';
